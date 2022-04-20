@@ -2,7 +2,7 @@
   "name": "makurofb",
   "version": "1.0.0",
   "description": "",
-  "main": "src/app.js",
+  "main": "index.js",
   "bin": {
     "makurofb": "bin/makurofb.js"
   },
@@ -15,19 +15,12 @@
   "dependencies": {
     "@prisma/client": "^3.12.0",
     "colors": "^1.4.0",
-    "cors": "^2.8.5",
     "enquirer": "^2.3.6",
-    "express": "^4.17.3",
     "firebase-admin": "^10.0.2",
-    "jquery": "^3.6.0",
-    "log-update": "^5.0.0",
     "prisma": "^3.12.0",
-    "puppeteer": "^13.5.2",
-    "socket.io": "^4.4.1",
-    "socket.io-client": "^4.4.1"
+    "puppeteer": "^13.5.2"
   },
   "devDependencies": {
-    "@types/prompts": "^2.0.14",
     "parcel": "^2.4.1"
   }
 }
