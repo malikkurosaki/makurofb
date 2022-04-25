@@ -11,11 +11,28 @@ datasource db {
 }
 
 model Users {
-  id       Int      @id @default(autoincrement())
-  name     String
-  email    String
-  password String
-  Cookies  Cookies?
+  id        Int        @id @default(autoincrement())
+  name      String
+  email     String
+  password  String
+  Cookies   Cookies?
+  Groups    Groups[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model Groups {
+  groupId   String
+  name      String
+  url       String
+  users     Users?   @relation(fields: [usersId], references: [id])
+  usersId   Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Shares    Shares[]
+
+  @@id([groupId, usersId])
+  Postings Postings[]
 }
 
 model Cookies {
@@ -23,22 +40,46 @@ model Cookies {
   key     String?
   value   String
   User    Users?  @relation(fields: [usersId], references: [id])
-  usersId Int     @unique
+  usersId Int?    @unique
 }
 
 model Contents {
-  id       Int      @id @default(autoincrement())
-  title    String
-  desc     String
-  price    Int
-  location String
-  image    Images[]
+  id    Int      @id @default(autoincrement())
+  title String
+  desc  String
+  price Int
+  image Images[]
+
+  Postings Postings[]
+  Shares   Shares[]
 }
 
 model Images {
   id         Int       @id @default(autoincrement())
   url        String
-  Content    Contents? @relation(fields: [contentsId], references: [id])
-  contentId  Int
+  Content    Contents? @relation(fields: [contentsId], references: [id], onDelete: Cascade)
   contentsId Int
+}
+
+model Postings {
+  id            Int       @id @default(autoincrement())
+  postingId     String
+  Content       Contents? @relation(fields: [contentsId], references: [id])
+  contentsId    Int?
+  Group         Groups?   @relation(fields: [groupsGroupId, groupsUsersId], references: [groupId, usersId])
+  createAt      DateTime  @default(now())
+  updateAt      DateTime  @updatedAt
+  groupsGroupId String?
+  groupsUsersId Int?
+}
+
+model Shares {
+  id            Int       @id @default(autoincrement())
+  Content       Contents? @relation(fields: [contentsId], references: [id])
+  contentsId    Int?
+  group         Groups?   @relation(fields: [groupsGroupId, groupsUsersId], references: [groupId, usersId])
+  createAt      DateTime  @default(now())
+  updateAt      DateTime  @updatedAt
+  groupsGroupId String?
+  groupsUsersId Int?
 }
